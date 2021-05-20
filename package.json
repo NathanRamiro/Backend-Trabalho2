@@ -4,17 +4,20 @@
   "description": "O backend do trabalho 2",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "keywords": [
     "backend",
-    "mongoDB",
+    "MongoDB",
     "NodeJS"
   ],
   "author": "Nathan Ramiro",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "express-validator": "^6.11.1",
     "mongoose": "^5.11.15"
   }
 }
