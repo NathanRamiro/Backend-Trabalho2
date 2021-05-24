@@ -1,21 +1,18 @@
 const express = require("express")
 require('dotenv').config()
 
-//InicializaMongoServer ./config/db
+const InicializaMongoServer = require('./config/Db')
 
-//Rotas da aplicação
-//
-//
-//
+const rotasAluno = require('./routes/Aluno')
 
-//InicializaMongoServer()
+InicializaMongoServer()
 
 const app = express()
+
 app.disable('x-powered-by')
 
 const PORT = process.env.PORT || 4000
 
-///*
 app.use((req,res,next)=>{
     // '*' deve ser trocado pelo dominio do app em produção
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -25,7 +22,7 @@ app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTION,PATCH')
     next()
 })
-//*/
+
 app.use(express.json())
 
 app.get('/',(req,res) =>{
@@ -36,6 +33,8 @@ app.get('/',(req,res) =>{
         idiomas:idiomas
     })
 })
+
+app.use('/alunos',rotasAluno)
 
 app.use((req,res)=>{
     res.status(404).json({message:`${req.originalUrl} não existe`})

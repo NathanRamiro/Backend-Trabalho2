@@ -1,0 +1,46 @@
+@baseURL = http://localhost:4000
+@cpf = 754.214.735-89
+
+###
+// GET - Lista of alunos
+GET {{baseURL}}/alunos
+Content-Type: application/json
+
+###
+// GET - Lista um aluno pelo cfp
+GET {{baseURL}}/alunos/{{cpf}}
+Content-Type: application/json
+
+###
+// POST - Inclui novo aluno
+POST {{baseURL}}/alunos
+Content-Type: application/json
+
+{"nome": "José Jovias",
+"dataMatricula":"2000/12/31", 
+"estaAtivo": true,
+"cpf":"754.214.735-89",
+"foto": {
+       "originalname": "massas.png", 
+       "path": "public/uploads/massas.png",
+       "size": 20771, 
+       "mimetype":"image/png"
+  }
+}
+
+###
+// DELETE - Apaga uma categoria
+DELETE {{baseURL}}/alunos/{{cpf}}
+Content-Type: application/json
+
+###
+// PUT - Altera a categoria
+PUT {{baseURL}}/alunos
+Content-Type: application/json
+
+{
+"cpf" : "754.214.735-89",
+"dataMatricula":"2020/01/01",
+"nome" : "José Jovias revengence",
+"status": true
+}

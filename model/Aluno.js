@@ -2,15 +2,15 @@ const mongoose = require('mongoose')
 
 const AlunoSchema = mongoose.Schema({
     nome:String,
-    sobrenome:String,
+    dataMatricula:String,
     cpf:{
         type:String,
         unique:true,
-        //match: "\d{3,3}\.\d{3,3}\.\d{3,3}\.-\d{2,2}"
+        //match: '\d{3,3}\.\d{3,3}\.\d{3,3}\.-\d{2,2}'
     },
     estaAtivo: {
         type:Boolean,
-        default:true
+        default:false
     },
     foto: {
         originalname: {type: String}, 
@@ -20,5 +20,5 @@ const AlunoSchema = mongoose.Schema({
     }
 },{timestamps:true})
 
-module.exports = mongoose.model('Aluno', AlunoSchema)
+module.exports = mongoose.model('alunos', AlunoSchema)
 
