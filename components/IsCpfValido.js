@@ -3,22 +3,17 @@
  * Recebe um CPF e retorna se o mesmo é valido
  * 
  * @param {String} cpf 
- * @returns Boolean
+ * @returns {Boolean}
  */
 
 function IsCpfValido(cpf){
 
-
     if (!cpf.match(/\d{3,3}\.\d{3,3}\.\d{3,3}-\d{2,2}/)){
-        return false            
+        return false
     }
-
 
     let numeros = cpf.replace(/[\.-]/g,"")
     let arrayNumeros = numeros.split('',numeros.length - 2)
-
-    console.log(cpf)
-    console.log(numeros)
 
     let validador1 = 0
 
@@ -45,11 +40,7 @@ function IsCpfValido(cpf){
     arrayNumeros.push(validador2)
 
     let final = arrayNumeros.toString()
-    console.log(final)
     final = final.replace(/,/g,'')
-
-    console.log(final)
-    console.log(cpf.replace(/[\.-]/g,""))
 
     return final === cpf.replace(/[\.-]/g,"")
 
