@@ -3,6 +3,7 @@ const router = express.Router()
 const {check, validationResult} = require('express-validator')
 
 const Aluno = require('../model/Aluno')
+const IsCpfValido = require('../components/IsCpfValido')
 
 /**
  * Obtem todos os alunos
@@ -29,9 +30,11 @@ router.get('/',async(req,res)=>{
     try{
         const aluno = await Aluno.findOne({"cpf":req.params.cpf})
         if (aluno === null){
-            aluno = {message:`Não foi foi encontrado um aluno com CPF: ${req.params.cpf}`}
+            let aluno = {message:`Não foi foi encontrado um aluno com CPF: ${req.params.cpf}`}
+            res.json(aluno)
+        } else {
+            res.json(aluno)
         }
-        res.json(aluno)
     } catch (err){
         res.status(500).send({
             errors:[{message: `Não foi possivel obter o aluno com CPF: ${req.params.cpf}`}]
@@ -48,22 +51,26 @@ router.get('/',async(req,res)=>{
         check('nome','O nome do aluno é obrigatorio').not().isEmpty(),
         check('dataMatricula','A data da matricula é obrigatoria').not().isEmpty(),
         check('cpf','O cpf do aluno é obrigatorio').not().isEmpty(),
-        //check('cpf','O nome do aluno é obrigatorio').not().equals('\d{3,3}\.\d{3,3}\.\d{3,3}-\d{2,2}')
+        // sei que tem como fazer validadores personalizados mas não fui a fundo no tema
     ]
 
  router.post('/',validaAluno,async(req,res)=>{
     const errors = validationResult(req)
-    //let cpf
     if(!errors.isEmpty()){
         return res.status(400).json({
             errors:errors.array()
         })
     }
     const {cpf} = req.body
+    if(!IsCpfValido(cpf)){
+        return res.status(400).json({
+            errors:[{message:'O cpf do aluno não é valido'}]
+        })
+    }
     let aluno = await Aluno.findOne({cpf})
     if(aluno){
         return res.status(200).json({
-            errors:[{message: 'este aluno ja foi cadastrado'}]
+            errors:[{message: 'Este aluno ja foi cadastrado'}]
         })
     }
     try{
@@ -100,7 +107,7 @@ router.get('/',async(req,res)=>{
 
  router.put('/',validaAluno,async(req,res)=>{
      const errors = validationResult(req)
-     if(!errors.isEmpty()){
+    if(!errors.isEmpty()){
         return res.status(400).json({
             errors:errors.array()
         })
@@ -112,6 +119,7 @@ router.get('/',async(req,res)=>{
     .then(aluno =>{
         res.send({message:`${aluno.cpf} alterado com sucesso`})
     }).catch(err=>{
+        console.log(err.message)
         return res.status(500).send({
             errors:[{message:'Não foi possivel alterar as informações do aluno'}]
         })

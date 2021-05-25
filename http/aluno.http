@@ -1,6 +1,7 @@
 @baseURL = http://localhost:4000
 @cpf = 754.214.735-89
-
+@cpf2 = 527.975.133-20
+@cpf3 = 539.456.672-08
 ###
 // GET - Lista of alunos
 GET {{baseURL}}/alunos
@@ -16,12 +17,12 @@ Content-Type: application/json
 POST {{baseURL}}/alunos
 Content-Type: application/json
 
-{"nome": "José Jovias",
+{"nome": "Jo",
 "dataMatricula":"2000/12/31", 
 "estaAtivo": true,
-"cpf":"754.214.735-89",
+"cpf":"539.456.672-08",
 "foto": {
-       "originalname": "massas.png", 
+       "originalname": "massas2.png", 
        "path": "public/uploads/massas.png",
        "size": 20771, 
        "mimetype":"image/png"
@@ -30,7 +31,7 @@ Content-Type: application/json
 
 ###
 // DELETE - Apaga uma categoria
-DELETE {{baseURL}}/alunos/{{cpf}}
+DELETE {{baseURL}}/alunos/{{cpf2}}
 Content-Type: application/json
 
 ###
@@ -39,8 +40,8 @@ PUT {{baseURL}}/alunos
 Content-Type: application/json
 
 {
-"cpf" : "754.214.735-89",
+"cpf" : "539.456.672-08",
 "dataMatricula":"2020/01/01",
-"nome" : "José Jovias revengence",
+"nome" : "José Jovia revengence",
 "status": true
 }
