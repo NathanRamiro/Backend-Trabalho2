@@ -19,8 +19,8 @@ Content-Type: application/json
 
 {"nome": "Jo",
 "dataMatricula":"2000/12/31", 
-"estaAtivo": true,
-"cpf":"539.456.672-08",
+"status": true,
+"cpf":"754.214.735-89",
 "foto": {
        "originalname": "massas2.png", 
        "path": "public/uploads/massas.png",
@@ -40,8 +40,8 @@ PUT {{baseURL}}/alunos
 Content-Type: application/json
 
 {
-"cpf" : "539.456.672-08",
+"cpf" : "754.214.735-89",
 "dataMatricula":"2020/01/01",
-"nome" : "José Jovia revengence",
+"nome" : "Joadfadfasdfafdfadf",
 "status": true
 }

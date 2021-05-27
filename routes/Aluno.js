@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {check, validationResult} = require('express-validator')
+const { check, validationResult } = require('express-validator')
 
 const Aluno = require('../model/Aluno')
 const IsCpfValido = require('../components/IsCpfValido')
@@ -10,13 +10,13 @@ const IsCpfValido = require('../components/IsCpfValido')
  * GET /alunos 
  */
 
-router.get('/',async(req,res)=>{
-    try{
-        const alunos = await Aluno.find({"estaAtivo":true}).sort({nome:1})
+router.get('/', async (req, res) => {
+    try {
+        const alunos = await Aluno.find({ "status": true }).sort({ nome: 1 })
         res.json(alunos)
-    } catch (err){
+    } catch (err) {
         res.status(500).send({
-            errors:[{message: 'Não foi possivel obter a lista de alunos'}]
+            errors: [{ message: 'Não foi possivel obter a lista de alunos' }]
         })
     }
 })
@@ -26,18 +26,18 @@ router.get('/',async(req,res)=>{
  * GET /alunos/:cpf
  */
 
- router.get('/:cpf',async(req,res)=>{
-    try{
-        const aluno = await Aluno.findOne({"cpf":req.params.cpf})
-        if (aluno === null){
-            let aluno = {message:`Não foi foi encontrado um aluno com CPF: ${req.params.cpf}`}
+router.get('/:cpf', async (req, res) => {
+    try {
+        const aluno = await Aluno.findOne({ "cpf": req.params.cpf })
+        if (aluno === null) {
+            let aluno = { message: `Não foi foi encontrado um aluno com CPF: ${req.params.cpf}` }
             res.json(aluno)
         } else {
             res.json(aluno)
         }
-    } catch (err){
+    } catch (err) {
         res.status(500).send({
-            errors:[{message: `Não foi possivel obter o aluno com CPF: ${req.params.cpf}`}]
+            errors: [{ message: `Não foi possivel obter o aluno com CPF: ${req.params.cpf}` }]
         })
     }
 })
@@ -47,39 +47,39 @@ router.get('/',async(req,res)=>{
  * POST /aluno 
  */
 
-    const validaAluno=[
-        check('nome','O nome do aluno é obrigatorio').not().isEmpty(),
-        check('dataMatricula','A data da matricula é obrigatoria').not().isEmpty(),
-        check('cpf','O cpf do aluno é obrigatorio').not().isEmpty(),
-        // sei que tem como fazer validadores personalizados mas não fui a fundo no tema
-    ]
+const validaAluno = [
+    check('nome', 'O nome do aluno é obrigatorio').not().isEmpty(),
+    check('dataMatricula', 'A data da matricula é obrigatoria').not().isEmpty(),
+    check('cpf', 'O cpf do aluno é obrigatorio').not().isEmpty(),
+    // sei que tem como fazer validadores personalizados mas não fui a fundo no tema
+]
 
- router.post('/',validaAluno,async(req,res)=>{
+router.post('/', validaAluno, async (req, res) => {
     const errors = validationResult(req)
-    if(!errors.isEmpty()){
+    if (!errors.isEmpty()) {
         return res.status(400).json({
-            errors:errors.array()
+            errors: errors.array()
         })
     }
-    const {cpf} = req.body
-    if(!IsCpfValido(cpf)){
+    const { cpf } = req.body
+    if (!IsCpfValido(cpf)) {
         return res.status(400).json({
-            errors:[{message:'O cpf do aluno não é valido'}]
+            errors: [{ message: 'O cpf do aluno não é valido' }]
         })
     }
-    let aluno = await Aluno.findOne({cpf})
-    if(aluno){
+    let aluno = await Aluno.findOne({ cpf })
+    if (aluno) {
         return res.status(200).json({
-            errors:[{message: 'Este aluno ja foi cadastrado'}]
+            errors: [{ message: 'Este aluno ja foi cadastrado' }]
         })
     }
-    try{
+    try {
         let aluno = new Aluno(req.body)
         await aluno.save()
         res.send(aluno)
-    } catch (err){
+    } catch (err) {
         return res.status(500).send({
-            errors:[{message: 'Ocorreu um erro ao cadastrar o aluno'}]
+            errors: [{ message: 'Ocorreu um erro ao cadastrar o aluno' }]
         })
     }
 })
@@ -89,15 +89,15 @@ router.get('/',async(req,res)=>{
  * DELETE /alunos/:cpf
  */
 
- router.delete('/:cpf',async(req,res)=>{
+router.delete('/:cpf', async (req, res) => {
     await Aluno.findOneAndDelete(req.params.cpf)
-    .then(aluno => {
-        res.send({message:`${aluno.cpf} removido com sucesso`})
-    }).catch(err =>{
-        return res.status(500).send({
-            errors:[{message:'Não foi possivel remover o aluno'}]
+        .then(aluno => {
+            res.send({ message: `${aluno.cpf} removido com sucesso` })
+        }).catch(err => {
+            return res.status(500).send({
+                errors: [{ message: 'Não foi possivel remover o aluno' }]
+            })
         })
-    })
 })
 
 /**
@@ -105,25 +105,28 @@ router.get('/',async(req,res)=>{
  * PUT /alunos/:cpf
  */
 
- router.put('/',validaAluno,async(req,res)=>{
-     const errors = validationResult(req)
-    if(!errors.isEmpty()){
+router.put('/', validaAluno, async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
         return res.status(400).json({
-            errors:errors.array()
+            errors: errors.array()
         })
     }
+    let aluno = await Aluno.findOne({cpf:req.body.cpf})
+    console.log(aluno)
     let dados = req.body
-    await Aluno.findOneAndUpdate(req.body.cpf,{
-        $set:dados
-    },{new:true})
-    .then(aluno =>{
-        res.send({message:`${aluno.cpf} alterado com sucesso`})
-    }).catch(err=>{
-        console.log(err.message)
-        return res.status(500).send({
-            errors:[{message:'Não foi possivel alterar as informações do aluno'}]
+    console.log(dados)
+    await Aluno.findByIdAndUpdate(aluno._id, {
+        $set: dados
+    }, { new: true })
+        .then(aluno => {
+            res.send({ message: `${aluno.cpf} alterado com sucesso` })
+        }).catch(err => {
+            console.log(err.message)
+            return res.status(500).send({
+                errors: [{ message: 'Não foi possivel alterar as informações do aluno' }]
+            })
         })
-    })
 })
 
 module.exports = router
