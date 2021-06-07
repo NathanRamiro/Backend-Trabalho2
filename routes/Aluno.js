@@ -78,7 +78,9 @@ router.post('/', validaAluno, async (req, res) => {
         await aluno.save()
         res.send(aluno)
     } catch (err) {
+        console.log(err.message)
         return res.status(500).send({
+            
             errors: [{ message: 'Ocorreu um erro ao cadastrar o aluno' }]
         })
     }
@@ -90,7 +92,10 @@ router.post('/', validaAluno, async (req, res) => {
  */
 
 router.delete('/:cpf', async (req, res) => {
-    await Aluno.findOneAndDelete(req.params.cpf)
+
+    //let cpf = req.params.cpf
+
+    await Aluno.findOneAndDelete({cpf:req.params.cpf})
         .then(aluno => {
             res.send({ message: `${aluno.cpf} removido com sucesso` })
         }).catch(err => {

@@ -1,7 +1,8 @@
 @baseURL = http://localhost:4000
 @cpf = 754.214.735-89
 @cpf2 = 527.975.133-20
-@cpf3 = 539.456.672-08
+@cpf3 = 539.456.672-
+@cpf4 = 557.843.613-76
 ###
 // GET - Lista of alunos
 GET {{baseURL}}/alunos
@@ -17,10 +18,11 @@ Content-Type: application/json
 POST {{baseURL}}/alunos
 Content-Type: application/json
 
-{"nome": "Jo",
+{"nome": "Jo3",
 "dataMatricula":"2000/12/31", 
+"curso":"ADS",
 "status": true,
-"cpf":"754.214.735-89",
+"cpf":"539.456.672-08",
 "foto": {
        "originalname": "massas2.png", 
        "path": "public/uploads/massas.png",
@@ -31,7 +33,7 @@ Content-Type: application/json
 
 ###
 // DELETE - Apaga uma categoria
-DELETE {{baseURL}}/alunos/{{cpf2}}
+DELETE {{baseURL}}/alunos/{{cpf4}}
 Content-Type: application/json
 
 ###
